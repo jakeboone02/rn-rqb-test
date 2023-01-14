@@ -9,9 +9,10 @@ import {
   ViewStyle
 } from "react-native";
 import { Combinator, RuleGroupProps, useRuleGroup } from "react-querybuilder";
-import { RuleNative } from "./RuleNative";
+import { WrapInStyleProp } from "./WrapInStyleProp";
 
 interface RuleGroupStyles {
+  ruleGroup?: ViewStyle;
   ruleGroupHeader?: ViewStyle;
   ruleGroupBody?: ViewStyle;
   combinatorSelector?: TextStyle;
@@ -19,44 +20,75 @@ interface RuleGroupStyles {
   inlineCombinator?: TextStyle;
 }
 
+type RuleGroupStyleSheets = WrapInStyleProp<RuleGroupStyles>;
+
 type RuleGroupNativeProps = RuleGroupProps & {
   styles?: RuleGroupStyles;
 };
 
-const baseStyles: Partial<Record<keyof RuleGroupStyles, ViewStyle>> = {
+const baseStyles: RuleGroupStyles = {
+  ruleGroup: {
+    borderWidth: 1,
+    marginBottom: 10,
+  },
   ruleGroupHeader: {
     flexDirection: "row",
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  ruleGroupBody: {
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingLeft: 10,
+  },
+  combinatorSelector: {
+    height: 30,
+    width: 50,
   },
 };
 
 export const RuleGroupNative = (props: RuleGroupNativeProps) => {
   const rg = { ...props, ...useRuleGroup(props) };
 
-  const styles = useMemo(() => ({
-    ruleGroupHeader: StyleSheet.flatten([
-      baseStyles.ruleGroupHeader,
-      props.styles?.ruleGroupHeader,
-    ]),
-    ruleGroupBody: StyleSheet.flatten([
-      baseStyles.ruleGroupBody,
-      props.styles?.ruleGroupBody,
-    ]),
-    combinatorSelector: StyleSheet.flatten([
-      baseStyles.combinatorSelector,
-      props.styles?.combinatorSelector,
-    ]),
-    combinatorOption: StyleSheet.flatten([
-      baseStyles.combinatorOption,
-      props.styles?.combinatorOption,
-    ]),
-    inlineCombinator: StyleSheet.flatten([
-      baseStyles.inlineCombinator,
-      props.styles?.inlineCombinator,
-    ]),
-  }), [props.styles]);
+  const {
+    schema: {
+      controls: { rule: RuleComponent, ruleGroup: RuleGroupComponent },
+    },
+  } = rg;
+
+  const styles = useMemo(
+    (): RuleGroupStyleSheets => ({
+      ruleGroup: StyleSheet.flatten([
+        baseStyles.ruleGroup,
+        props.styles?.ruleGroup,
+      ]),
+      ruleGroupHeader: StyleSheet.flatten([
+        baseStyles.ruleGroupHeader,
+        props.styles?.ruleGroupHeader,
+      ]),
+      ruleGroupBody: StyleSheet.flatten([
+        baseStyles.ruleGroupBody,
+        props.styles?.ruleGroupBody,
+      ]),
+      combinatorSelector: StyleSheet.flatten([
+        baseStyles.combinatorSelector,
+        props.styles?.combinatorSelector,
+      ]),
+      combinatorOption: StyleSheet.flatten([
+        baseStyles.combinatorOption,
+        props.styles?.combinatorOption,
+      ]),
+      inlineCombinator: StyleSheet.flatten([
+        baseStyles.inlineCombinator,
+        props.styles?.inlineCombinator,
+      ]),
+    }),
+    [props.styles]
+  );
 
   return (
-    <View>
+    <View style={styles.ruleGroup}>
       <View style={styles.ruleGroupHeader}>
         <Picker
           style={styles.combinatorSelector}
@@ -64,7 +96,7 @@ export const RuleGroupNative = (props: RuleGroupNativeProps) => {
           selectedValue={rg.combinator}
           onValueChange={(v) => rg.onCombinatorChange(v)}
         >
-          {(rg.schema.combinators as Combinator[]).map(c => (
+          {(rg.schema.combinators as Combinator[]).map((c) => (
             <Picker.Item key={c.name} label={c.label} value={c.name} />
           ))}
         </Picker>
@@ -76,21 +108,38 @@ export const RuleGroupNative = (props: RuleGroupNativeProps) => {
           title={props.translations.addGroup.label!}
           onPress={(e) => rg.addGroup(e)}
         />
+        {rg.path.length > 0 && (
+          <Button
+            title={props.translations.removeGroup.label!}
+            onPress={(e) => rg.removeGroup(e)}
+          />
+        )}
       </View>
       <View style={styles.ruleGroupBody}>
         {rg.ruleGroup.rules.map((r, idx) =>
           typeof r === "string" ? (
-            <Text style={styles.inlineCombinator} key={rg.path.join("-")}>{r}</Text>
+            <Text style={styles.inlineCombinator} key={rg.path.join("-")}>
+              {r}
+            </Text>
           ) : "rules" in r ? (
-            <Text key={r.id}>RuleGroupNative goes here...</Text>
+            // <Text key={r.id}>RuleGroupNative goes here...</Text>
+            <RuleGroupComponent
+              key={r.id}
+              ruleGroup={r}
+              rules={r.rules}
+              path={[...rg.path, idx]}
+              translations={rg.translations}
+              schema={rg.schema}
+              actions={rg.actions}
+            />
           ) : (
-            <RuleNative
+            <RuleComponent
               key={r.id}
               rule={r}
               field={r.field}
               operator={r.operator}
               value={r.value}
-              path={[idx]}
+              path={[...rg.path, idx]}
               translations={rg.translations}
               schema={rg.schema}
               actions={rg.actions}
