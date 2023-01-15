@@ -12,6 +12,7 @@
     "@expo/webpack-config": "^0.17.2",
     "@react-native-picker/picker": "^2.4.8",
     "@react-querybuilder/ctx": "file:../rqb-v6/packages/ctx",
+    "@react-querybuilder/native": "file:../rqb-v6/packages/native",
     "@react-querybuilder/ts": "file:../rqb-v6/packages/ts",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",

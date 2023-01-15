@@ -1803,6 +1803,9 @@
 "@react-querybuilder/ctx@^5.4.0", "@react-querybuilder/ctx@file:../rqb-v6/packages/ctx":
   version "5.4.0"
 
+"@react-querybuilder/native@file:../rqb-v6/packages/native":
+  version "5.4.0"
+
 "@react-querybuilder/ts@^5.4.0", "@react-querybuilder/ts@file:../rqb-v6/packages/ts":
   version "5.4.0"
 

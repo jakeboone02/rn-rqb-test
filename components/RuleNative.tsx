@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { Field, Operator, RuleProps, useRule } from "react-querybuilder";
-import { WrapInStyleProp } from "./WrapInStyleProp";
+import { WrapInStyleProp } from "../types";
 
 interface RuleStyles {
   rule?: ViewStyle;

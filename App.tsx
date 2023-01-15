@@ -1,8 +1,8 @@
+import { QueryBuilderNative } from "@react-querybuilder/native";
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { Field, formatQuery, RuleGroupType } from "react-querybuilder";
-import { QueryBuilderNative } from "./QueryBuilderNative";
 
 const defaultQuery: RuleGroupType = {
   combinator: "and",
@@ -37,6 +37,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     padding: 20,
     paddingTop: 100,
     flex: 1,

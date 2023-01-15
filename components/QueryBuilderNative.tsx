@@ -24,7 +24,6 @@ export const QueryBuilderNative = <
   return (
     <RuleGroupNative
       ruleGroup={qb.query}
-      rules={qb.query.rules}
       path={[]}
       translations={qb.translations}
       schema={qb.schema}

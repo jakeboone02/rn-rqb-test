@@ -9,7 +9,7 @@ import {
   ViewStyle
 } from "react-native";
 import { Combinator, RuleGroupProps, useRuleGroup } from "react-querybuilder";
-import { WrapInStyleProp } from "./WrapInStyleProp";
+import { WrapInStyleProp } from "../types";
 
 interface RuleGroupStyles {
   ruleGroup?: ViewStyle;
@@ -122,11 +122,9 @@ export const RuleGroupNative = (props: RuleGroupNativeProps) => {
               {r}
             </Text>
           ) : "rules" in r ? (
-            // <Text key={r.id}>RuleGroupNative goes here...</Text>
             <RuleGroupComponent
               key={r.id}
               ruleGroup={r}
-              rules={r.rules}
               path={[...rg.path, idx]}
               translations={rg.translations}
               schema={rg.schema}
@@ -136,9 +134,6 @@ export const RuleGroupNative = (props: RuleGroupNativeProps) => {
             <RuleComponent
               key={r.id}
               rule={r}
-              field={r.field}
-              operator={r.operator}
-              value={r.value}
               path={[...rg.path, idx]}
               translations={rg.translations}
               schema={rg.schema}
