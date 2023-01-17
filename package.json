@@ -11,16 +11,17 @@
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
     "@react-native-picker/picker": "^2.4.8",
-    "@react-querybuilder/ctx": "file:../rqb-v6/packages/ctx",
-    "@react-querybuilder/native": "file:../rqb-v6/packages/native",
-    "@react-querybuilder/ts": "file:../rqb-v6/packages/ts",
+    "@react-querybuilder/ctx": "link:../rqb-v6/packages/ctx",
+    "@react-querybuilder/native": "link:../rqb-v6/packages/native",
+    "@react-querybuilder/ts": "link:../rqb-v6/packages/ts",
+    "clsx": "^1.2.1",
     "expo": "~47.0.12",
     "expo-status-bar": "~1.4.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
     "react-native-web": "~0.18.9",
-    "react-querybuilder": "file:../rqb-v6/packages/react-querybuilder"
+    "react-querybuilder": "link:../rqb-v6/packages/react-querybuilder"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -28,5 +29,6 @@
     "@types/react-native": "~0.70.6",
     "typescript": "^4.6.3"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@3.3.1"
 }
